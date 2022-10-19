@@ -1,0 +1,35 @@
+Description: fix mmx cpuid detection
+ The MMX detection in SDL_imageFilter.c contains buggy assembly which reads
+ garbage values off the stack.  This usually results in MMX not being used
+ on i386; sometimes it instead causes the test suite to fail.  At runtime it
+ could also cause MMX instructions to be used on non-MMX machines.
+ .
+ Replace this cpu detection code with code that doesn't rely on the stack
+ pointer staying the same after popa.
+Author: Steve Langasek <steve.langasek@canonical.com>
+Bug: http://sourceforge.net/support/tracker.php?aid=3550046
+Bug-Debian: http://bugs.debian.org/663514
+Bug-Ubuntu: https://launchpad.net/bugs/1029981
+
+Index: sdlgfx-2.0.23/SDL_imageFilter.c
+===================================================================
+--- sdlgfx-2.0.23.orig/SDL_imageFilter.c
++++ sdlgfx-2.0.23/SDL_imageFilter.c
+@@ -80,12 +80,12 @@
+ 			popa
+ 	}
+ #else
+-	asm volatile ("pusha		     \n\t" "mov    %1, %%eax     \n\t"	/* request feature flag */
++	asm volatile ("pusha		     \n\t" "mov    %0, %%eax     \n\t"	/* request feature flag */
+ 		"cpuid                \n\t"	/* get CPU ID flag */
+-		"mov    %%edx, %0     \n\t"	/* move result to mmx_bit */
+-		"popa		     \n\t":"=m" (flags)	/* %0 */
+-		:"i"(0x00000001)	/* %1 */
+-		);
++		"mov    %%edx, 0(%1)  \n\t"	/* move result to mmx_bit */
++		"popa		     \n\t":
++		:"i"(0x00000001), "S"(&flags)	/* %0, %1 */
++		: "memory");
+ #endif
+ #endif
+ 

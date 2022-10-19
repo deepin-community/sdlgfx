@@ -1,0 +1,34 @@
+#!/bin/sh
+
+# Author: Manuel A. Fernandez Montecelo <mafm@debian.org>
+#
+# autopkgtest check: Build example programs against the library, to perform a
+# basic smoke test
+
+
+set -e
+
+WORKDIR=$(mktemp -d)
+trap "rm -rf $WORKDIR" 0 INT QUIT ABRT PIPE TERM
+cd $WORKDIR
+
+EXAMPLES=/usr/share/doc/libsdl-gfx1.2-doc/examples.tar.gz
+
+# compile
+tar xvf $EXAMPLES -C .
+cd examples
+./autogen.sh
+./configure
+make
+echo "build: OK"
+
+# check/execute
+for BINFILE in `echo Test*.c | sed 's|\.c||g'`
+do
+    echo "check if test executable does exist: $BINFILE"
+    [ -x "$BINFILE" ]
+
+    # interactive, cannot invoke and close from command line
+    #./$BINFILE
+done
+echo "run: OK"

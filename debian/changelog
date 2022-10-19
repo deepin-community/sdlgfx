@@ -1,0 +1,422 @@
+sdlgfx (2.0.25-11.1) unstable; urgency=medium
+
+  * Non maintainer upload by the Reproducible Builds team.
+  * No source change upload to rebuild on buildd with .buildinfo files.
+
+ -- Holger Levsen <holger@debian.org>  Fri, 01 Jan 2021 15:29:09 +0100
+
+sdlgfx (2.0.25-11) unstable; urgency=medium
+
+  * d/rules: Add @ in 'tar --mtime="@$(SOURCE_DATE_EPOCH)"', otherwise the
+    date is not valid (Closes: #911792)
+
+ -- Manuel A. Fernandez Montecelo <mafm@debian.org>  Thu, 25 Oct 2018 01:56:31 +0200
+
+sdlgfx (2.0.25-10) unstable; urgency=medium
+
+  * Bump Policy Standars-Version to 4.2.1 (no changes needed)
+  * Switch to debhelper compat level v11
+  * d/control:
+    - Update Vcs-* URLs
+    - Use https in Homepage
+    - Set "Rules-Requires-Root: no"
+  * d/watch:
+    - Switch to version=4
+    - Use https in URL
+  * d/rules:
+    - include /usr/share/dpkg/architecture.mk and .../pkg-info.mk to
+      provide DEB_HOST_* and SOURCE_DATE_EPOCH, instead of getting them
+      through shell invocations.
+    - dh_install --fail-missing is deprecated and about to be removed,
+      use dh_missing instead
+    - replace dh_linktree with dh_link, it does not work straight away
+      with compat level v11
+    - override dh_installdocs to keep libsdl2-gfx-doc as main doc package
+
+ -- Manuel A. Fernandez Montecelo <mafm@debian.org>  Tue, 23 Oct 2018 13:22:16 +0200
+
+sdlgfx (2.0.25-9) unstable; urgency=medium
+
+  * Changes when creating tar with examples for reproducible builds.
+    Thanks Chris Lamb. (Closes: #879913)
+  * More fixes to tests: check only for tests that are built by default
+  * Bump Policy Standards-Version to 4.1.1
+    - Stop using priority "extra" for the -doc package
+  * Quell lintian warning "unnecessary-testsuite-autopkgtest-header"
+
+ -- Manuel A. Fernandez Montecelo <mafm@debian.org>  Sat, 28 Oct 2017 23:12:55 +0200
+
+sdlgfx (2.0.25-8) unstable; urgency=medium
+
+  * d/tests/control: depend on the -doc package, the one containing the
+    examples to compile and test
+  * Fixes to tests
+
+ -- Manuel A. Fernandez Montecelo <mafm@debian.org>  Sat, 01 Jul 2017 00:14:48 +0200
+
+sdlgfx (2.0.25-7) unstable; urgency=medium
+
+  * Bump Policy Standards-Version to 4.0.0, no changes needed
+  * Fix for reproducible builds: specify permissions when creating
+    examples.tar file
+  * Add tests for autopkgtest
+
+ -- Manuel A. Fernandez Montecelo <mafm@debian.org>  Tue, 27 Jun 2017 18:44:49 +0200
+
+sdlgfx (2.0.25-6) unstable; urgency=medium
+
+  * Bump std-version to 3.9.8, no changes required.
+  * Switch to debhelper compat level v10
+    - dh flags --parallel are not needed
+    - autoreconf is invoked by default
+  * Fixes for reproducible builds
+    - restrict time of files in examples tar file
+    - use gzip -n
+  * Update Vcs-* URLs
+  * Update Homepage URL
+
+ -- Manuel A. Fernandez Montecelo <mafm@debian.org>  Tue, 20 Jun 2017 20:57:34 +0200
+
+sdlgfx (2.0.25-5) unstable; urgency=medium
+
+  [ Gianfranco Costamagna ]
+  * Team upload
+  * Revert lintian override, jquery should stay out of the
+    source tarball too.
+  * fix watch file.
+  * Bump std-version to 3.9.6, no changes required.
+
+  [ Felix Geyer ]
+  * Make build reproducible.
+    - Pass "--owner=0 --group=0" to tar for creating examples.tar.gz
+
+ -- Gianfranco Costamagna <locutusofborg@debian.org>  Sun, 24 Jan 2016 14:09:46 +0100
+
+sdlgfx (2.0.25-4) unstable; urgency=medium
+
+  [ Gianfranco Costamagna ]
+  * Team upload.
+  * Removed lintian versioned debhelper unused override.
+  * Add override for embedded jquery, we already symlink it when building
+  * Update watch file.
+
+ -- Manuel A. Fernandez Montecelo <mafm@debian.org>  Sat, 19 Apr 2014 18:07:13 +0100
+
+sdlgfx (2.0.25-3) unstable; urgency=medium
+
+  * Target unstable
+
+ -- Manuel A. Fernandez Montecelo <mafm@debian.org>  Mon, 07 Apr 2014 21:07:47 +0100
+
+sdlgfx (2.0.25-2) experimental; urgency=low
+
+  [ Gianfranco Costamagna ]
+  * Fixing jquery lintian warning
+  * Re-enabling MMX detection in debian/rules, autodetection
+    doesn't work properly.
+
+ -- Manuel A. Fernandez Montecelo <mafm@debian.org>  Thu, 20 Feb 2014 17:35:46 +0000
+
+sdlgfx (2.0.25-1) experimental; urgency=low
+
+  * Team upload.
+
+  [ Gianfranco Costamagna ]
+  * New upstream release.
+  * Bump Standards-Version to 3.9.5, no changes needed
+  * Drop obsolete DM-Upload-Allowed
+  * Disabled wrong_cpuid_mmx_detection.diff, now mmx is detected by
+    SDL_HasMMX() function.
+  * Bumped package soname to 5.
+  * Removed some version checks on debian/control, newer versions already
+    in oldstable
+  * Removed override dh_installchangelogs, changelog should be
+    automatically installed
+
+  [ Manuel A. Fernandez Montecelo ]
+  * Use wildcards to install the .so files
+  * Change maintainer address to @debian.org
+  * Remove MMX detection in debian/rules, it's auto-detected
+
+ -- Manuel A. Fernandez Montecelo <mafm@debian.org>  Wed, 19 Feb 2014 18:08:09 +0000
+
+sdlgfx (2.0.23-3) unstable; urgency=low
+
+  * Add libsdl-gfx1.2-dev.preinst to remove /usr/share/doc/libsdl-gfx1.2-dev
+    symlink to libsdl-gfx1.2-4, if existing from previous versions of the
+    package (it was like that in Squeeze).  Otherwise, when -dev is removed, it
+    removes files from the libsdl-gfx1.2-4.  Thanks to Andreas Beckmann for the
+    report (Closes: #700785).
+
+ -- Manuel A. Fernandez Montecelo <manuel.montezelo@gmail.com>  Sun, 17 Feb 2013 23:32:26 +0000
+
+sdlgfx (2.0.23-2) unstable; urgency=high
+
+  [ Steve Langasek ]
+  * High-urgency upload for RC bugfix.
+  * debian/patches/wrong_cpuid_mmx_detection.diff: fix mmx cpuid
+    detection.  Closes: #663514, LP: #1029981.
+
+ -- Felix Geyer <debfx-pkg@fobos.de>  Fri, 03 Aug 2012 17:28:49 +0200
+
+sdlgfx (2.0.23-1) unstable; urgency=low
+
+  [ Felix Geyer ]
+  * New upstream release.
+    - Update copyright file.
+  * Switch to source format 3.0 (quilt).
+  * Switch to dh(1) debian/rules.
+  * Don't install README and AUTHORS since the html docs contain both.
+  * Don't install the .la file.
+  * Move the pkg-config file to the -dev package.
+  * Drop ancient Conflicts/Replaces.
+  * Switch to debhelper compat level v9.
+    - Exports build flags.
+    - Build for multiarch.
+  * Bump Standards-Version to 3.9.2, no further changes needed.
+  * Add myself as uploader and drop all previous uploaders as they haven't
+    touched the package in more than 2 years.
+  * Enable parallel building.
+  * Use dh-autoreconf to fix ancient-libtool lintian warning.
+  * Move the documentation into a new package.
+  * Update Vcs control fields to the new git repository.
+  * Override package-name-doesnt-match-sonames lintian warning.
+  * Add a symbols file.
+
+  [ Dominique Dumont ]
+  * control: added Multi-Arch: same in dev package
+  * override lintian source warning about versioned debhelper
+  * control: allow DM uploads
+
+ -- Felix Geyer <debfx-pkg@fobos.de>  Fri, 30 Dec 2011 20:55:51 +0100
+
+sdlgfx (2.0.22-1) unstable; urgency=low
+
+  * Team upload.
+  * New upstream release. (Closes: #616409, #627051; LP: #676799)
+    - Adapt 010_primitives_spell.diff
+  * Bump shlibs to 2.0.22.
+  * Clear out dependency_libs in libSDL_gfx.la. (Closes: #550644)
+
+ -- Felix Geyer <debfx-pkg@fobos.de>  Mon, 30 May 2011 15:27:57 +0200
+
+sdlgfx (2.0.20-1.1) unstable; urgency=high
+
+  * Non-maintainer upload.
+  * Bump shlibs to 2.0.19 for the SONAME change (closes: #549110).
+
+ -- Julien Cristau <jcristau@debian.org>  Tue, 31 Aug 2010 19:31:18 +0200
+
+sdlgfx (2.0.20-1) unstable; urgency=low
+
+  [ Barry deFreese ]
+  * New upstream release. (Closes: #549250).
+  * Add ${misc:Depends} for debhelper package.
+  * Add README.source for quilt patch system.
+  * Improve -dev package description.
+  * Fix watch file.
+  * Bump Standards Version to 3.8.3. (No changes needed).
+
+ -- Barry deFreese <bdefreese@debian.org>  Tue, 06 Oct 2009 15:11:11 -0400
+
+sdlgfx (2.0.19-2) unstable; urgency=low
+
+  * Fix symlink for .so.4. (Closes: #526184, #526363).
+    + Was pointing to .so.13.5.0 instead of .so.13.5.1.
+  * 010_primitives_spell.diff. (Closes: #513760).
+    + Fix misspelling of SDL_Primitives.h.
+
+ -- Barry deFreese <bdefreese@debian.org>  Thu, 30 Apr 2009 14:34:05 -0400
+
+sdlgfx (2.0.19-1) unstable; urgency=low
+
+  [ Barry deFreese ]
+  * Add myself to uploaders.
+  * New upstream release. (Closes: #444966, #484164).
+    + Drop existing patches.
+    + 100_rotozoom_allocation_checks.diff used -p0. (Closes: #484958).
+    + Keep -4 binary package name since ABI has not changed.
+  * Symlink libSDL_gfx.so.13.5.0 to libSDL_gfx.so.4 to ease transition.
+    + SONAME is now .so.13 but is ABI compatible.
+  * Remove quilt .pc dir on clean.
+  * Add watch file.
+  * Remove duplicate libs section from binary package.
+  * Bump debhelper build-dep and compat to 5.
+  * Bump Standards Version to 3.8.1.
+
+ -- Barry deFreese <bdefreese@debian.org>  Fri, 03 Apr 2009 15:27:37 -0400
+
+sdlgfx (2.0.13-4) unstable; urgency=low
+
+  [ Aurelien Jarno ]
+  * debian/control:
+    + Make the package binNMU safe.
+    + Set policy 3.7.3.
+
+  * debian/patches/020_gcc4.3.diff:
+    + Fix build with gcc-4.3 (Closes: #389256, #474889).
+
+  * debian/rules:
+    + Don't ignore make distclean errors.
+
+  * debian/copyright:
+    + Add copyright entry.
+
+ -- Aurelien Jarno <aurel32@debian.org>  Tue, 22 Apr 2008 21:22:39 +0200
+
+sdlgfx (2.0.13-3) unstable; urgency=high
+
+  * debian/control:
+    + Set policy 3.7.2.
+    + Added XS-Vcs-Svn field.
+
+  * debian/rules:
+    + Add missing binary-indep target (Closes: #395744).
+
+  * debian/patches/100_rotozoom_allocation_checks.diff:
+    + Check for return values in the rotozoom routines, patch courtesy of
+      Kevin Locke (Closes: #405154).
+
+ -- Sam Hocevar (Debian packages) <sam+deb@zoy.org>  Fri,  9 Feb 2007 22:51:50 +0100
+
+sdlgfx (2.0.13-2) unstable; urgency=low
+
+  * Moved development to the pkg-sdl Alioth project.
+
+  * debian/rules:
+    + Use quilt for patch management.
+  * debian/control:
+    + Build-depend on quilt.
+    + Set the SDL team as the maintainer and added its members to the
+      uploaders field.
+
+  * debian/patches/000_am_maintainer_mode.diff:
+  * debian/patches/010_test_am_maintainer_mode.diff:
+    + Set AM_MAINTAINER_MODE.
+
+  * debian/patches/000_binary_age.diff:
+  * debian/patches/005_headers.diff:
+    + Imported old patches.
+
+  * debian/patches/000_remove_acinclude.diff:
+  * debian/patches/001_rebootstrap.diff:
+  * debian/patches/010_test_remove_acinclude.diff:
+  * debian/patches/011_test_rebootstrap.diff:
+    + Get rid of acinclude.m4 and properly rebootstrap directories.
+
+ -- Sam Hocevar (Debian packages) <sam+deb@zoy.org>  Wed,  1 Mar 2006 20:05:46 +0100
+
+sdlgfx (2.0.13-1) unstable; urgency=low
+
+  * New upstream release (Closes: #283742).
+  * Re-ran the autogen.sh process.
+  * debian/control:
+    + Set policy to 3.6.2.1.
+    + Changed library package name to reflect soname change.
+
+ -- Sam Hocevar (Debian packages) <sam+deb@zoy.org>  Sun, 16 Oct 2005 18:17:55 +0200
+
+sdlgfx (2.0.9-6) unstable; urgency=low
+
+  *sigh*, forgot the conflict/replaces on file move.
+
+ -- Sam Hocevar (Debian packages) <sam+deb@zoy.org>  Sun, 16 Oct 2005 18:05:44 +0200
+
+sdlgfx (2.0.9-5) unstable; urgency=low
+
+  * Removed acinclude.m4 and reboostrapped (Closes: #319954, #320008).
+  * debian/rules:
+    + Moved .la file to the -dev package.
+
+ -- Sam Hocevar (Debian packages) <sam+deb@zoy.org>  Sun, 16 Oct 2005 17:47:35 +0200
+
+sdlgfx (2.0.9-4) unstable; urgency=low
+
+  * debian/control:
+    + Set policy to 3.6.1.1.
+  * *.h:
+    + Removed extra ';' in extern "C" constructs (Closes: #260582).
+
+ -- Sam Hocevar (Debian packages) <sam+deb@zoy.org>  Tue, 27 Jul 2004 18:41:13 +0200
+
+sdlgfx (2.0.9-3) unstable; urgency=low
+
+  * Makefile.am:
+    + Moved headers to /usr/include/SDL (was /usr/include) (Closes: #222395).
+
+ -- Sam Hocevar (Debian packages) <sam+deb@zoy.org>  Sat, 31 Jan 2004 04:12:47 +0100
+
+sdlgfx (2.0.9-2) unstable; urgency=low
+
+  * configure.in:
+    + Fixed binary age to keep our SONAME (Closes: #218215).
+
+ -- Sam Hocevar (Debian packages) <sam+deb@zoy.org>  Thu, 30 Oct 2003 11:40:53 +0100
+
+sdlgfx (2.0.9-1) unstable; urgency=low
+
+  * New upstream release.
+  * debian/control:
+    + Set policy to 3.6.1.0.
+    + Changed debhelper build-dependency to (>= 4.0).
+  * debian/rules:
+    + Include documentation and examples with the -dev package.
+
+ -- Sam Hocevar (Debian packages) <sam+deb@zoy.org>  Mon, 27 Oct 2003 21:56:52 +0100
+
+sdlgfx (2.0.8-1) unstable; urgency=low
+
+  * New upstream release, fixes a few minor bugs.
+  * configure.in:
+    + Set BINARY_AGE to 8 so that we don't get a .so.8 library.
+    + Re-ran autogen.sh.
+  * debian/control:
+    + Set policy to 3.6.0. No changes required.
+    + Updated debhelper build-dependency to (>= 3.4.4) because we now
+      use debian/compat.
+
+ -- Sam Hocevar (Debian packages) <sam+deb@zoy.org>  Thu, 17 Jul 2003 01:53:33 +0200
+
+sdlgfx (2.0.3-6) unstable; urgency=low
+
+  * debian/control:
+    + Build-depend on libsdl1.2-dev (>= 1.2.5-8) because 1.2.5-7 had a broken
+      shlibs file.
+    + Removed libc6-dev from the -dev package's dependencies.
+
+ -- Sam Hocevar (Debian packages) <sam+deb@zoy.org>  Thu, 12 Jun 2003 13:29:29 +0200
+
+sdlgfx (2.0.3-5) unstable; urgency=low
+
+  * Set policy to 3.5.10.
+  * Removed the leading "a" in the package description.
+
+ -- Sam Hocevar (Debian packages) <sam+deb@zoy.org>  Mon,  9 Jun 2003 23:36:35 -0400
+
+sdlgfx (2.0.3-4) unstable; urgency=low
+
+  * Updated config.guess and config.sub in the Test directory.
+  * Updated standards version to 3.5.9.0.
+  * Changed libsdl-gfx1.2-dev's section to libdevel.
+
+ -- Samuel Hocevar <sam@zoy.org>  Sat, 12 Apr 2003 00:49:40 +0200
+
+sdlgfx (2.0.3-3) unstable; urgency=low
+
+  * Updated config.guess and config.sub.
+  * debian/control is now in sync with the override file.
+
+ -- Samuel Hocevar <sam@zoy.org>  Wed, 12 Mar 2003 02:21:16 +0100
+
+sdlgfx (2.0.3-2) unstable; urgency=low
+
+  * Re-run autogen.sh (Closes: #181723).
+  * Disabled MMX on non-x86 architectures.
+
+ -- Samuel Hocevar <sam@zoy.org>  Tue, 11 Mar 2003 15:01:19 -0500
+
+sdlgfx (2.0.3-1) unstable; urgency=low
+
+  * Initial Release (Closes: #180581).
+
+ -- Samuel Hocevar <sam@zoy.org>  Tue, 11 Feb 2003 14:07:15 +0100

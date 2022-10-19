@@ -1,0 +1,48 @@
+#!/usr/bin/make -f
+
+include /usr/share/dpkg/architecture.mk
+include /usr/share/dpkg/pkg-info.mk
+
+LIBPKG = libsdl-gfx1.2-5
+
+
+%:
+	dh $@
+
+CONFIGURE_FLAGS ?=--disable-mmx
+
+ifeq ($(DEB_HOST_ARCH), i386 )
+	CONFIGURE_FLAGS =--enable-mmx
+endif
+ifeq ($(DEB_HOST_ARCH), amd64)
+	CONFIGURE_FLAGS =--enable-mmx
+endif
+
+override_dh_auto_configure:
+	dh_auto_configure -- $(CONFIGURE_FLAGS)
+
+override_dh_auto_build:
+	dh_auto_build
+	GZIP=-n tar -cvz --transform='s,^Test,examples,' --owner=0 --group=0 --mode=go=rX,u+rw,a-s --mtime="@$(SOURCE_DATE_EPOCH)" --sort=name -f debian/examples.tar.gz Test
+
+override_dh_auto_clean:
+	dh_auto_clean
+	rm -f debian/examples.tar.gz
+
+override_dh_install:
+	dh_install -XlibSDL_gfx.la -Xjquery.js
+
+override_dh_installdocs:
+	dh_installdocs -plibsdl-gfx1.2-doc --doc-main-package=libsdl-gfx1.2-doc
+	dh_installdocs --remaining-packages
+
+override_dh_missing:
+	dh_missing --fail-missing -XlibSDL_gfx.la -Xjquery.js
+
+override_dh_link:
+	# fix lintian warning dev-pkg-without-shlib-symlink
+	dh_link -p$(LIBPKG) usr/lib/$(DEB_HOST_MULTIARCH)/libSDL_gfx.so.15.9.1 \
+		usr/lib/$(DEB_HOST_MULTIARCH)/libSDL_gfx.so.5
+	dh_link -plibsdl-gfx1.2-doc usr/share/javascript/jquery/jquery.js \
+		usr/share/doc/libsdl-gfx1.2-doc/html/jquery.js
+	dh_link --remaining-packages

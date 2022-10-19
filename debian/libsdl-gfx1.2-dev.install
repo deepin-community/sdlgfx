@@ -1,0 +1,4 @@
+usr/include/SDL
+usr/lib/*/libSDL_gfx.a
+usr/lib/*/libSDL_gfx.so
+usr/lib/*/pkgconfig/SDL_gfx.pc
